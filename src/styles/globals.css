@@ -1,0 +1,92 @@
+@import 'tailwindcss';
+
+:root {
+}
+
+@theme inline {
+  --font-display: 'Chango', Arial, Helvetica, sans-serif;
+  --font-sans: 'Noto Sans TC', sans-serif;
+
+  /* 字級 */
+  --text-hero: clamp(2.5rem, 8vw, 6rem); /* 40px → 96px */
+  --text-h1: clamp(2rem, 5vw, 3.5rem); /* 32px → 56px */
+  --text-h2: 1.875rem;
+  --text-h3: 1.5rem;
+  --text-body-lg: 1.125rem; /* 18px */
+  --text-body: 1rem; /* 16px */
+  --text-body-sm: 0.875rem; /* 14px */
+  --text-caption: 0.75rem; /* 12px */
+
+  /* 行高 */
+  --leading-title: 1.15;
+  --leading-paragraph: 1.5;
+
+  /* 字距 */
+  --tracking-hero: 0.02em;
+  --tracking-tight: -0.01em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.02em;
+
+  /* 顏色 */
+  --color-black: #373737;
+  --color-dark-gray: #666666;
+  --color-medium-gray: #999999;
+  --color-light-gray: #f6f3f4;
+
+  --color-orange: #ffa73b;
+  --color-yellow: #ededbd;
+  --color-blue: #cad7f0;
+  --color-dark-blue: #4785ff;
+  --color-green: #cbf0d4;
+  --color-red: #ee9a9c;
+  --color-purple: #d0c0f2;
+  --color-danger: #cf2e0e;
+}
+
+@layer base {
+  body {
+    /* background: var(--background); */
+    color: var(--color-black);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    font-weight: 300;
+    line-height: var(--leading-paragraph);
+  }
+}
+
+/* input */
+textarea:focus,
+input:focus {
+  outline: none;
+}
+
+/* 按鈕 */
+button {
+  cursor: pointer;
+  text-wrap: nowrap;
+}
+
+/* Tab 按鈕 */
+.btn-tab {
+  @apply rounded-full px-3 transition;
+}
+
+.btn-tab-active {
+  @apply border-none bg-blue text-black rounded-full border-blue-500;
+}
+
+.btn-tab-inactive {
+  @apply rounded-full;
+}
+
+/* 刪除按鈕 */
+.btn-delete {
+  @apply text-medium-gray hover:text-danger hover:underline hover:underline-offset-4;
+}
+
+/* checkbox */
+
+/* 標籤 */
+.tag {
+  @apply bg-white rounded-xl px-3 text-nowrap cursor-pointer flex flex-row items-center gap-1;
+}
