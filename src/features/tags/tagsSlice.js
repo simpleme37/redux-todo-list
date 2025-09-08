@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const DEFAULT_TAGS = [
-  { id: 666, text: '標籤 1', color: '#ee9a9c' },
-  { id: 888, text: '標籤 2', color: '#ffa73b' },
+  { id: 666, text: '標籤 A', color: '#ee9a9c' },
+  { id: 888, text: '標籤 B', color: '#ffa73b' },
 ];
 
 const loadFromLocalStorage = () => {

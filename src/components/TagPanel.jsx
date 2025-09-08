@@ -1,21 +1,19 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addTag, deleteTag, updateTag } from '../features/tags/tagsSlice';
-import { deleteTagAndCleanTodos } from '../actions/tagActions';
-import TagItem from './TagItem';
+import { addTag, updateTag } from '@/features/tags/tagsSlice';
+import { deleteTagAndCleanTodos } from '@/actions/tagActions';
+import TagItem from '@/components/TagItem';
 import Swal from 'sweetalert2';
 
 export default function TagPanel({ tagEditMode }) {
   const [text, setText] = useState('');
   const [error, setError] = useState('');
-
   const [editingId, setEditingId] = useState(null);
   const [editingText, setEditingText] = useState('');
-
   const dispatch = useDispatch();
   const tags = useSelector(state => state.tags);
 
-  // 新增 Tag
+  // 處理新增標籤
   const handleAdd = () => {
     if (!text.trim()) {
       setError('請輸入標籤文字');
@@ -39,12 +37,14 @@ export default function TagPanel({ tagEditMode }) {
     });
   };
 
+  // 監聽輸入框 Enter 鍵 → 觸發新增
   const handleKeyDown = e => {
     if (e.key === 'Enter') {
       handleAdd();
     }
   };
 
+  // 監聽輸入框內容變化 → 更新文字 & 清除錯誤訊息
   const handleChange = e => {
     setText(e.target.value);
     if (error) {
@@ -52,7 +52,7 @@ export default function TagPanel({ tagEditMode }) {
     }
   };
 
-  // 刪除 Tag
+  // 處理刪除標籤
   const handleDelete = id => {
     Swal.fire({
       title: '確定刪除此標籤?',
@@ -67,12 +67,13 @@ export default function TagPanel({ tagEditMode }) {
     });
   };
 
-  // 編輯 Tag
+  // 進入編輯模式（設定目前編輯中的標籤）
   const handleEdit = tag => {
     setEditingId(tag.id);
     setEditingText(tag.text);
   };
 
+  // 確認更新標籤內容
   const handleUpdate = id => {
     if (!editingText.trim()) {
       setEditingId(null);
@@ -102,12 +103,15 @@ export default function TagPanel({ tagEditMode }) {
           maxLength={10}
           className="w-full bg-white rounded-full px-4 py-1"
         />
-        <button onClick={handleAdd} className="font-display bg-black text-green w-full rounded-full py-1">
+        <button
+          onClick={handleAdd}
+          className="font-display bg-black text-green w-full rounded-full py-1"
+        >
           Add Tag
         </button>
       </div>
 
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2 pt-2 min-h-0 overflow-y-auto">
         {tags.map(tag => (
           <TagItem
             key={tag.id}

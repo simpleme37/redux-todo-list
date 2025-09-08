@@ -1,7 +1,6 @@
 import { useDrag } from 'react-dnd';
-import { ItemTypes } from '../constants';
-import Cancel from '../assets/icon/Cancel';
-import { deleteTagAndCleanTodos } from '../actions/tagActions';
+import { ItemTypes } from '@/constants';
+import Cancel from '@/assets/icon/Cancel';
 
 export default function TagItem({
   tag,
@@ -14,18 +13,20 @@ export default function TagItem({
   handleUpdate,
   handleDelete,
 }) {
+  // 使用 react-dnd 的 useDrag 建立「可拖曳的標籤」：
   const [{ isDragging }, dragRef] = useDrag(
     () => ({
-      type: ItemTypes.TAG,
+      type: ItemTypes.TAG, // 拖曳物件的類型
       item: { tagId: tag.id }, // 拖曳時要傳的資料
+      // 監聽拖曳狀態
       collect: monitor => ({
-        isDragging: monitor.isDragging(),
+        isDragging: monitor.isDragging(), 
       }),
     }),
     []
   );
 
-  // 只有在非編輯模式下才綁定 dragRef
+  // 如果目前在「標籤編輯模式」下，就不允許拖曳 → 不綁定 dragRef
   const dragElementRef = tagEditMode ? null : dragRef;
 
   return (

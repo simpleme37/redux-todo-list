@@ -1,28 +1,31 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearTodo, updateTodo } from '../features/todos/todosSlice';
-import TodoItem from './TodoItem';
+import { clearTodo, updateTodo } from '@/features/todos/todosSlice';
+import TodoItem from '@/components/TodoItem';
 import clsx from 'clsx';
 
-import FaceSurprise from '../assets/icon/FaceSurprise';
+import FaceSurprise from '@/assets/icon/FaceSurprise';
 
 export default function TodoList() {
+  const todos = useSelector(state => state.todos);
+  const dispatch = useDispatch();
+  
   const [filter, setFilter] = useState('all'); // all、active、completed
   const [editingId, setEditingId] = useState();
   const [editingText, setEditingText] = useState();
 
-  const todos = useSelector(state => state.todos);
-  const dispatch = useDispatch();
-
+  // 清空所有 todo
   const handleClear = () => {
     dispatch(clearTodo());
   };
 
+  // 將某筆 todo 切換成「編輯模式」
   const handleEdit = todo => {
     setEditingId(todo.id);
     setEditingText(todo.text);
   };
 
+  // 確認並更新 todo 內容
   const handleUpdate = id => {
     if (!editingText.trim()) {
       setEditingId(null);
@@ -35,7 +38,7 @@ export default function TodoList() {
     setEditingText('');
   };
 
-  // 篩選狀態
+  // 根據目前 filter 狀態過濾 todo
   const filterTodos = todos.filter(todo => {
     if (filter === 'all') {
       return true;
@@ -48,14 +51,12 @@ export default function TodoList() {
     }
   });
 
-  // 排序完成的順序
+  // 排序 todo：未完成在上面，已完成在下面
   const sortedTodos = filterTodos.slice().sort((a, b) => {
     return Number(a.done) - Number(b.done);
   });
 
-  // console.log(sortedTodos);
-  // console.log(editingId);
-
+  // 處理日期格式：去掉秒數
   const formatDate = function (date) {
     return date.toLocaleString('zh-TW', {
       hour12: false,
@@ -64,7 +65,6 @@ export default function TodoList() {
       day: '2-digit',
       hour: '2-digit',
       minute: '2-digit',
-      // 不要顯示 second
     });
   };
 
@@ -134,7 +134,7 @@ export default function TodoList() {
           </ul>
         </div>
       ) : (
-        <div className="text-medium-gray flex flex-col gap-1 justify-center h-full items-center">
+        <div className="text-medium-gray flex flex-col gap-1 justify-center h-full items-center p-6 lg:p-0">
           <FaceSurprise size={32} />
           <p>目前沒有待辦事項</p>
         </div>

@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const DEFAULT_TODOS = [
   { id: Date.now(), text: '待辦事項 1', tagIds: [666, 888], done: false },
-  { id: Date.now() + 1, text: '待辦事項 2', tagIds: [666], done: true },
+  { id: Date.now() + 1, text: '待辦事項 2', tagIds: [666], done: true, completedAt: Date.now() },
   { id: Date.now() + 2, text: '待辦事項 3', tagIds: [], done: false },
 ];
 

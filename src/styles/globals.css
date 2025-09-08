@@ -1,21 +1,23 @@
 @import 'tailwindcss';
 
-:root {
-}
-
 @theme inline {
+  /* 字型 */
   --font-display: 'Chango', Arial, Helvetica, sans-serif;
   --font-sans: 'Noto Sans TC', sans-serif;
 
   /* 字級 */
   --text-hero: clamp(2.5rem, 8vw, 6rem); /* 40px → 96px */
   --text-h1: clamp(2rem, 5vw, 3.5rem); /* 32px → 56px */
-  --text-h2: 1.875rem;
-  --text-h3: 1.5rem;
+  --text-h2: 1.875rem; /* 30px */
+  --text-h3: 1.5rem; /* 24px */
   --text-body-lg: 1.125rem; /* 18px */
   --text-body: 1rem; /* 16px */
   --text-body-sm: 0.875rem; /* 14px */
-  --text-caption: 0.75rem; /* 12px */
+
+  /* 字重 */
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-bold: 700;
 
   /* 行高 */
   --leading-title: 1.15;
@@ -45,11 +47,11 @@
 
 @layer base {
   body {
-    /* background: var(--background); */
+    background-color: var(--color-light-gray);
     color: var(--color-black);
     font-family: var(--font-sans);
     font-size: var(--text-body);
-    font-weight: 300;
+    font-weight: var(--font-normal);
     line-height: var(--leading-paragraph);
   }
 }
@@ -72,7 +74,7 @@ button {
 }
 
 .btn-tab-active {
-  @apply border-none bg-blue text-black rounded-full border-blue-500;
+  @apply border-none bg-blue text-black rounded-full font-medium;
 }
 
 .btn-tab-inactive {
@@ -83,8 +85,6 @@ button {
 .btn-delete {
   @apply text-medium-gray hover:text-danger hover:underline hover:underline-offset-4;
 }
-
-/* checkbox */
 
 /* 標籤 */
 .tag {

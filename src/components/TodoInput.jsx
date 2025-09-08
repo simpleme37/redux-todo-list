@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { addTodo } from '../features/todos/todosSlice';
+import { addTodo } from '@/features/todos/todosSlice';
 import Swal from 'sweetalert2';
 
 export default function TodoInput() {
@@ -9,6 +9,7 @@ export default function TodoInput() {
   const dispatch = useDispatch();
   const inputRef = useRef(null);
 
+  // 新增待辦事項
   const handleAdd = () => {
     if (!text.trim()) {
       setError('請輸入待辦事項');
@@ -32,12 +33,14 @@ export default function TodoInput() {
     });
   };
 
+  // 鍵盤事件：按下 Enter 觸發新增
   const handleKeyDown = e => {
     if (e.key === 'Enter') {
       handleAdd();
     }
   };
 
+  // 輸入框文字改變時更新狀態，並清除錯誤訊息
   const handleChange = e => {
     setText(e.target.value);
     if (error) {
@@ -46,7 +49,7 @@ export default function TodoInput() {
   };
 
   return (
-    <div className='flex gap-2'>
+    <div className='flex flex-col sm:flex-row gap-2'>
       <div className='w-full'>
         <input
           type="text"
@@ -60,7 +63,7 @@ export default function TodoInput() {
         />
         {error && <span>{error}</span>}
       </div>
-      <button onClick={handleAdd} disabled={!text.trim()} className='font-display bg-black text-yellow rounded-full px-4'>
+      <button onClick={handleAdd} disabled={!text.trim()} className='font-display bg-black text-yellow rounded-full py-1 sm:py-0 px-4'>
         Add Todo
       </button>
     </div>

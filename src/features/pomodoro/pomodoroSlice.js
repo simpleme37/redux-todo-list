@@ -7,12 +7,24 @@ const loadFromLocalStorage = () => {
     : {
         isRunning: false,
         mode: 'idle', // idle | focus | short_break | long_break
-        timeLeft: 25 * 60, // 25 分鐘
+        timeLeft: 25 * 60,
         focusDuration: 25 * 60,
         shortBreakDuration: 5 * 60,
         longBreakDuration: 15 * 60,
         sessionCount: 1,
-        history: [],
+        history: [
+          { mode: 'focus', duration: 25 * 60, timeStamp: Date.now() },
+          { mode: 'focus', duration: 25 * 60, timeStamp: Date.now() - 1 * 86400000 },
+          { mode: 'short_break', duration: 5 * 60, timeStamp: Date.now() - 1 * 86400000 },
+          { mode: 'focus', duration: 25 * 60, timeStamp: Date.now() - 1 * 86400000 },
+          { mode: 'focus', duration: 25 * 60, timeStamp: Date.now() - 2 * 86400000 },
+          { mode: 'focus', duration: 50 * 60, timeStamp: Date.now() - 2 * 86400000 },
+          { mode: 'focus', duration: 75 * 60, timeStamp: Date.now() - 3 * 86400000 },
+          { mode: 'focus', duration: 25 * 60, timeStamp: Date.now() - 5 * 86400000 },
+          { mode: 'focus', duration: 25 * 60, timeStamp: Date.now() - 6 * 86400000 },
+          { mode: 'focus', duration: 100 * 60, timeStamp: Date.now() - 7 * 86400000 },
+          { mode: 'focus', duration: 50 * 60, timeStamp: Date.now() - 8 * 86400000 },
+        ],
       };
 };
 
@@ -34,6 +46,14 @@ const pomodoroSlice = createSlice({
       state.isRunning = false;
       state.mode = 'idle';
       state.timeLeft = state.focusDuration;
+    },
+    skipBreak: state => {
+      // 只允許在 short_break 或 long_break 時執行
+      if (state.mode === 'short_break' || state.mode === 'long_break') {
+        state.mode = 'focus';
+        state.timeLeft = state.focusDuration;
+        state.isRunning = false;
+      }
     },
     tick: state => {
       if (state.timeLeft < 0) state.timeLeft = 0;
@@ -83,7 +103,7 @@ const pomodoroSlice = createSlice({
   },
 });
 
-export const { startTimer, pauseTimer, resetTimer, tick } = pomodoroSlice.actions;
+export const { startTimer, pauseTimer, resetTimer, skipBreak, tick } = pomodoroSlice.actions;
 
 export default (state, action) => {
   const newState = pomodoroSlice.reducer(state, action);
