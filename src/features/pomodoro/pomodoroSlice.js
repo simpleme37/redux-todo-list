@@ -12,6 +12,7 @@ const loadFromLocalStorage = () => {
         shortBreakDuration: 5 * 60,
         longBreakDuration: 15 * 60,
         sessionCount: 1,
+        seedOffset: 1,
         history: [
           { mode: 'focus', duration: 25 * 60, timeStamp: Date.now() },
           { mode: 'focus', duration: 25 * 60, timeStamp: Date.now() - 1 * 86400000 },
@@ -33,6 +34,10 @@ const pomodoroSlice = createSlice({
   initialState: loadFromLocalStorage(),
   reducers: {
     startTimer: state => {
+      // 把 seedOffset 歸 0
+      if (state.seedOffset) {
+        state.seedOffset = 0;
+      }
       state.isRunning = true;
       if (state.mode === 'idle') {
         state.mode = 'focus';
@@ -56,7 +61,6 @@ const pomodoroSlice = createSlice({
       }
     },
     tick: state => {
-      if (state.timeLeft < 0) state.timeLeft = 0;
       // timeLeft 大於 0，只扣秒就結束
       if (state.isRunning && state.timeLeft > 0) {
         state.timeLeft -= 1;
@@ -87,7 +91,13 @@ const pomodoroSlice = createSlice({
         if (state.mode === 'focus') {
           // 專注 -> 休息
           state.sessionCount += 1;
-          state.mode = state.sessionCount % 4 === 0 ? 'long_break' : 'short_break';
+
+          // 本輪「有效完成次數」（扣掉種子）
+          const effectiveCompleted = Math.max(0, state.sessionCount - (state.seedOffset || 0));
+          // 每完成 4 次「有效」專注，給長休
+          state.mode =
+            effectiveCompleted > 0 && effectiveCompleted % 4 === 0 ? 'long_break' : 'short_break';
+
           state.timeLeft =
             state.mode === 'short_break' ? state.shortBreakDuration : state.longBreakDuration;
         } else {
